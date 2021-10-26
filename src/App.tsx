@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { fetchQuizQuestions, Difficulty, QuestionState } from "./API";
 import QuestionCard from "./components/QuestionCard";
 import './App.css';
@@ -18,12 +18,13 @@ const App: React.FC = () => {
   const[score, setScore] = useState(0);
   const[gameOver, setGameOver] = useState(true);
 
-  const[quantity, setQuantity] = useState(0);
+  const[quantity, setQuantity] = useState(10);
 
   console.log(questions);
   
   
-  const startQuiz = async () => {
+  const startQuiz = async (e: React.FormEvent) => {
+    e.preventDefault();
     setLoading(true);
     setGameOver(false);
 
@@ -67,23 +68,16 @@ const App: React.FC = () => {
     }
   };
 
-  const handleSubmit = (e: any) => {
-    console.log(quantity);
-    
-  };
-
   return (
     <div className="App">
       <h1>
         Quizzon
       </h1>
       {gameOver || userAnswers.length === quantity ? (
-      <form>
+      <form onSubmit={startQuiz}>
         <label htmlFor="quantity">Number of Questions: </label>
-        <input type="number" min='1' max='50' placeholder='1' id='quantity' onChange={(e) => setQuantity(Number(e.target.value))}/>
-        <label htmlFor="quantity">Number of Questions: </label>
-        <input type="number" min='1' max='50' placeholder='1' id='quantity' onChange={(e) => setQuantity(Number(e.target.value))}/>
-        <button className='start' onClick={startQuiz}>
+        <input type="number" min='1' max='50' placeholder='10' id='quantity' onChange={(e) => setQuantity(Number(e.target.value))}/>
+        <button className='start'>
           Start
         </button>
       </form>
